@@ -6,7 +6,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 // commands
 const commands = [
     new SlashCommandBuilder()
-        .setName("Ping")
+        .setName("ping")
         .setDescription("Just a ping command")
 ]
 
