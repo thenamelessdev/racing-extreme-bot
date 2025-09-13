@@ -1,0 +1,23 @@
+{
+  "name": "racing-extreme-bot",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/thenamelessdev/racing-extreme-bot#readme",
+  "bugs": {
+    "url": "https://github.com/thenamelessdev/racing-extreme-bot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thenamelessdev/racing-extreme-bot.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "^14.22.1"
+  }
+}
