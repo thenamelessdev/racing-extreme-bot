@@ -2,6 +2,10 @@ const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, Ac
 const { token } = require('../config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping] });
+//variables
+
+// verifed role id
+const verifedRoleID = "1352581581054803988"; 
 
 // commands
 const commands = [
@@ -60,10 +64,16 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 // say command
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (interaction.commandName == "say" && interaction.member.roles.cache.has("1352581581054803988")) {
-        const msg = interaction.options.getString("message");
-        await interaction.reply({ content: "Message sent!", ephemeral: true });
-        interaction.channel.send(msg);
+    if (interaction.commandName == "say") {
+        if (interaction.member.roles.cache.has(verifedRoleID))
+        {
+            const msg = interaction.options.getString("message");
+            await interaction.reply({ content: "Message sent!", ephemeral: true });
+            interaction.channel.send(msg);
+        }
+        else {
+            interaction.reply({ content: "Please verify before using this command", ephemeral: true });
+        }
     }
 })
 
