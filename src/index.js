@@ -7,6 +7,9 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 // verifed role id
 const verifedRoleID = "1352581581054803988"; 
 
+// welcome channel id
+const welcomeChannelID = "1406207097070288896";
+
 // commands
 const commands = [
     new SlashCommandBuilder()
@@ -99,6 +102,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
             await interaction.reply({ content: "You are not verifed", ephemeral: true });
         }
     }
+})
+
+// events
+
+// welcome message
+client.on(Events.GuildMemberAdd, async (member) => {
+    const welcomeChannel = await client.channels.fetch(welcomeChannelID);
+    await welcomeChannel.send(`<@${member.user.id}> joined the server. Welcome!`);
 })
 
 client.login(token);
