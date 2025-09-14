@@ -20,6 +20,15 @@ const commands = [
             .setName("message")
             .setDescription("The message that you want to send")
             .setRequired(true)
+        ),
+    new SlashCommandBuilder()
+        .setName("suggest")
+        .setDescription("Suggest something for the bot")
+        .addStringOption(option => 
+            option
+            .setName("suggestion")
+            .setDescription("The suggestion")
+            .setRequired(true)
         )
 ]
 
@@ -73,6 +82,21 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
         else {
             interaction.reply({ content: "Please verify before using this command", ephemeral: true });
+        }
+    }
+})
+
+// suggest command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "suggest") {
+        if (interaction.member.roles.cache.has(verifedRoleID)) {
+            const nameless = await client.users.fetch("825412517278646313");
+            const suggestion = interaction.options.getString("suggestion");
+            await nameless.send(`Suggestion: ${suggestion}`);
+            await interaction.reply("Suggested!");
+        }
+        else {
+            await interaction.reply({ content: "You are not verifed", ephemeral: true });
         }
     }
 })
