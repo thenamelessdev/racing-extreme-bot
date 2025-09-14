@@ -7,7 +7,16 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const commands = [
     new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Just a ping command")
+        .setDescription("Just a ping command"),
+    new SlashCommandBuilder()
+        .setName("say")
+        .setDescription("Says some thing")
+        .addStringOption(option =>
+            option
+            .setName("message")
+            .setDescription("The message that you want to send")
+            .setRequired(true)
+        )
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -46,6 +55,15 @@ client.on(Events.MessageCreate, (message) => {
 client.on(Events.InteractionCreate, (interaction) => {
     if (interaction.commandName == "ping") {
         interaction.reply("Pong!")
+    }
+})
+
+// say command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "say" && interaction.member.roles.cache.has("1352581581054803988")) {
+        const msg = interaction.options.getString("message");
+        await interaction.reply({ content: "Message sent!", MessageFlags: [MessageFlags.Ephemeral] });
+        interaction.channel.send(msg);
     }
 })
 
