@@ -23,7 +23,8 @@ const commands = [
             .setName("message")
             .setDescription("The message that you want to send")
             .setRequired(true)
-        ),
+        )
+        .setDMPermission(false),
     new SlashCommandBuilder()
         .setName("suggest")
         .setDescription("Suggest something for the bot")
@@ -33,6 +34,7 @@ const commands = [
             .setDescription("The suggestion")
             .setRequired(true)
         )
+        .setDMPermission(false)
 ]
 
 client.once(Events.ClientReady, async readyClient => {
