@@ -62,7 +62,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName == "say" && interaction.member.roles.cache.has("1352581581054803988")) {
         const msg = interaction.options.getString("message");
-        await interaction.reply({ content: "Message sent!", MessageFlags: [MessageFlags.Ephemeral] });
+        await interaction.reply({ content: "Message sent!", ephemeral: true });
         interaction.channel.send(msg);
     }
 })
