@@ -98,6 +98,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             const nameless = await client.users.fetch("825412517278646313");
             const suggestion = interaction.options.getString("suggestion");
             await nameless.send(`Suggestion: ${suggestion}`);
+            console.log(`Suggestion ${suggestion}`)
             await interaction.reply("Suggested!");
         }
         else {
