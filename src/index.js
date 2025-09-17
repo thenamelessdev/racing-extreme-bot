@@ -115,4 +115,10 @@ client.on(Events.GuildMemberAdd, async (member) => {
     await welcomeChannel.send(`<@${member.user.id}> joined the server. Welcome!`);
 })
 
+// leave message
+client.on(Event.GuildMemberRemove, async (member) => {
+    const welcomeChannel = await client.channels.fetch(welcomeChannelID);
+    await welcomeChannel.send(`<@${member.user.id}> left the server the server :(`);
+})
+
 client.login(token);
