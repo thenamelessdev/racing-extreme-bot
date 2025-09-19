@@ -121,4 +121,9 @@ client.on(Event.GuildMemberRemove, async (member) => {
     await welcomeChannel.send(`<@${member.user.id}> left the server the server :(`);
 })
 
+// delete message
+client.on(Events.MessageDelete, async (message) => {
+    message.channel.send(`<@${message.author.id}>: \n${message.content}`);
+})
+
 client.login(token);
