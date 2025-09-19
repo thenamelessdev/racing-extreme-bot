@@ -82,8 +82,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
         if (interaction.member.roles.cache.has(verifedRoleID))
         {
             const msg = interaction.options.getString("message");
-            await interaction.reply({ content: "Message sent!", ephemeral: true });
-            interaction.channel.send(msg);
+            if (msg.includes("@everyone") || msg.includes("@here")) {
+                await interaction.reply({ content: "You can't ping everyone", ephemeral: true });
+            }
+            else{
+                await interaction.channel.send(msg)
+                await interaction.reply({ content: "Message sent!", ephemeral: true });
+            }
         }
         else {
             interaction.reply({ content: "Please verify before using this command", ephemeral: true });
