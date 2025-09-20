@@ -161,6 +161,12 @@ client.on(Events.MessageDelete, async (message) => {
         return
     }
     else {
+        if (message.content.contains("@everyone")) {
+            const embed = new EmbedBuilder()
+                .setTitle(`${message.author.username}:`)
+                .setDescription(message.content)
+            message.channel.send({ embeds: [embed] })
+        }
         message.channel.send(`<@${message.author.id}>: \n${message.content}`);
     }
 })
