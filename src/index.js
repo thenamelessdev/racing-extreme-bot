@@ -157,7 +157,7 @@ client.on(Event.GuildMemberRemove, async (member) => {
 
 // delete message
 client.on(Events.MessageDelete, async (message) => {
-    if (member.user.bot) {
+    if (message.author.bot) {
         return
     }
     else {
