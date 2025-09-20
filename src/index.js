@@ -136,7 +136,7 @@ client.on(Events.InteractionCreate, (interaction) => {
             .setStyle(ButtonStyle.Primary)
         const actionRow = new ActionRowBuilder()
             .addComponents(ticketButton)
-        interaction.channel.send({ embeds: [ticketEmbed], compoments: [actionRow] });
+        interaction.channel.send({ embeds: [ticketEmbed], components: [actionRow] });
         interaction.reply({ content: "Panel sent!", ephemeral: true });
     }
 })
