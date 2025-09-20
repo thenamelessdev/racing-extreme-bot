@@ -10,6 +10,10 @@ const verifedRoleID = "1352581581054803988";
 // welcome channel id
 const welcomeChannelID = "1406207097070288896";
 
+// join role IDs
+const unveriferRoleID = "1352581380151709736";
+const jrRacerRoleID = "1412486871900229632";
+
 // commands
 const commands = [
     new SlashCommandBuilder()
@@ -114,10 +118,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 // events
 
-// welcome message
+// welcome message and roles
 client.on(Events.GuildMemberAdd, async (member) => {
     const welcomeChannel = await client.channels.fetch(welcomeChannelID);
     await welcomeChannel.send(`<@${member.user.id}> joined the server. Welcome!`);
+    await member.roles.add(jrRacerRoleID);
+    await member.roles.add(unveriferRoleID);
 })
 
 // leave message
