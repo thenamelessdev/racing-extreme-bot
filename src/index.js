@@ -1,6 +1,7 @@
 const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, Status, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ContextMenuCommandBuilder, ModalBuilder, ApplicationCommandType, messageLink, Guild } = require('discord.js');
 const { token } = require('../config.json');
 const { PermissionOverwriteManager } = require('discord.js');
+const fetch = require("node-fetch");
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping] });
 //variables
@@ -46,7 +47,17 @@ const commands = [
     new SlashCommandBuilder()
         .setName("ticket-setup")
         .setDescription("Sends the ticket panel to the currect channel. Staff only")
+        .setDMPermission(false),
+    new SlashCommandBuilder()
+        .setName("verify")
+        .setDescription("Get access to the server")
         .setDMPermission(false)
+        .addStringOption(option =>
+            option
+            .setName("roblox-username")
+            .setDescription("Your roblox username. We will not store this in a database or keep it.")
+            .setRequired(true)
+        )
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -138,6 +149,41 @@ client.on(Events.InteractionCreate, (interaction) => {
             .addComponents(ticketButton)
         interaction.channel.send({ embeds: [ticketEmbed], components: [actionRow] });
         interaction.reply({ content: "Panel sent!", ephemeral: true });
+    }
+})
+
+// verify command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "verify") {
+        if (interaction.member.roles.cache.has(verifedRoleID)) {
+            await interaction.reply({ content: "You are already verifed.", ephemeral: true })
+        }
+        else {
+            const rbxUsername = interaction.options.getString("roblox-username");
+            const getUname = await fetch("https://users.roblox.com/v1/usernames/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ usernames: rbxUsername })
+            });
+            try {
+                const rbxID = getUname.id;
+            }
+            catch {
+                await interaction.reply({ content: "The username wasn't found.", ephemeral: true });
+                return;
+            }
+            const getDescription = await fetch(`https://users.roblox.com/v1/users/${rbxID}`, {
+                method: "GET"
+            });
+            const description = getDescription.description;
+            if (description == "RACEVERIFY") {
+                await interaction.member.roles.add(verifedRoleID);
+                await interaction.reply({ content: "You are verifed!", ephemeral: true });
+            }
+            else {
+                await interaction.reply({ content: "Please set `RACEVERIFY` as your Roblox description for the verification. You may change it back after the verification.", ephemeral: true });
+            }
+        }
     }
 })
 
