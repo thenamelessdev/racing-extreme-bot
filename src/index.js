@@ -1,5 +1,6 @@
 const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, Status, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ContextMenuCommandBuilder, ModalBuilder, ApplicationCommandType, messageLink } = require('discord.js');
 const { token } = require('../config.json');
+const { memo } = require('react');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping] });
 //variables
@@ -132,7 +133,12 @@ client.on(Event.GuildMemberRemove, async (member) => {
 
 // delete message
 client.on(Events.MessageDelete, async (message) => {
-    message.channel.send(`<@${message.author.id}>: \n${message.content}`);
+    if (member.user.bot) {
+        return
+    }
+    else {
+        message.channel.send(`<@${message.author.id}>: \n${message.content}`);
+    }
 })
 
 client.login(token);
