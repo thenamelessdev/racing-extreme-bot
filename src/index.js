@@ -126,7 +126,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 // ticket setup command
 client.on(Events.InteractionCreate, (interaction) => {
-    if (interaction.commandName == "ticket-setup"  && interaction.user.roles.cache.has(staffRoleID)) {
+    if (interaction.commandName == "ticket-setup"  && interaction.member.roles.cache.has(staffRoleID)) {
         const ticketEmbed = new EmbedBuilder()
             .setTitle("Create ticket")
             .setDescription("Make a ticket by clicking the button below. Please do not abuse this.")
