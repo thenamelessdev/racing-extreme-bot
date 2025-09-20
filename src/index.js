@@ -168,18 +168,26 @@ client.on(Events.MessageDelete, async (message) => {
 // create ticket button
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.customId == "openTicketBtn") {
-        const ticketChannel = await interaction.guild.channels.create({ name: `ticket-${interaction.user.username}`, type: 0, PermissionOverwrites: [
-            {
-                id: interaction.guild.roles.everyone, deny: ["ViewChannel"]
-            },
-            {
-                id: interaction.user.id, allow: ["ViewChannel", "SendMessages"]
-            },
-            {
-                id: staffRoleID, allow: ["ViewChannel", "SendMessages"]
-            }
-        ] })
-        const ticketEmbed = new EmbedBuilder()
+const ticketChannel = await interaction.guild.channels.create({
+  name: `ticket-${interaction.user.username}`,
+  type: 0,
+  permissionOverwrites: [
+    {
+      id: interaction.guild.roles.everyone.id,
+      deny: ["ViewChannel"],
+    },
+    {
+      id: interaction.user.id,
+      allow: ["ViewChannel", "SendMessages"],
+    },
+    {
+      id: staffRoleID,
+      allow: ["ViewChannel", "SendMessages"],
+    },
+  ],
+  reason: `Ticket created by ${interaction.user.tag}`,
+});
+ ticketEmbed = new EmbedBuilder()
             .setTitle("Ticket")
             .setDescription("Welcome to the ticket! Please use the button below to close the ticket.")
         const closeButton = new ButtonBuilder()
