@@ -1,6 +1,7 @@
-const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, Status, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ContextMenuCommandBuilder, ModalBuilder, ApplicationCommandType, messageLink } = require('discord.js');
+const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, Status, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ContextMenuCommandBuilder, ModalBuilder, ApplicationCommandType, messageLink, Guild } = require('discord.js');
 const { token } = require('../config.json');
 const { memo } = require('react');
+const { PermissionOverwriteManager } = require('discord.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping] });
 //variables
@@ -125,7 +126,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })
 
 // ticket setup command
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.InteractionCreate, (interaction) => {
     if (interaction.commandName == "ticket-setup"  && interaction.user.roles.cache.has(staffRoleID)) {
         const ticketEmbed = new EmbedBuilder()
             .setTitle("Create ticket")
@@ -137,6 +138,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const actionRow = new ActionRowBuilder()
             .addComponents(ticketButton)
         interaction.channel.send({ embeds: [ticketEmbed], compoments: [actionRow] });
+        interaction.reply({ content: "Panel sent!", ephemeral: true });
     }
 })
 
@@ -161,6 +163,43 @@ client.on(Events.MessageDelete, async (message) => {
     }
     else {
         message.channel.send(`<@${message.author.id}>: \n${message.content}`);
+    }
+})
+
+// create ticket button
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.customId == "openTicketBtn") {
+        const ticketChannel = await guild.channels.create({ name: `ticket-${interaction.user.username}`, type: 0, PermissionOverwrites: [
+            {
+                id: guild.roles.everyone, deny: ["ViewChannel"]
+            },
+            {
+                id: interaction.user.id, allow: ["ViewChannel", "SendMessages"]
+            },
+            {
+                id: staffRoleID, allow: ["ViewChannel", "SendMessages"]
+            }
+        ] })
+        const ticketEmbed = new EmbedBuilder()
+            .setTitle("Ticket")
+            .setDescription("Welcome to the ticket! Please use the button below to close the ticket.")
+        const closeButton = new ButtonBuilder()
+            .setCustomId("closeButton")
+            .setLabel("Close ticket")
+            .setStyle(ButtonStyle.Primary)
+        const actionRow = new ActionRowBuilder()
+            .addComponents(closeButton)
+        const firstMsg = await ticketChannel.send({ content: `<@&${staffRoleID}> <@${interaction.user.id}`, embeds: [ticketEmbed], compoments: [actionRow] });
+        await firstMsg.pin()
+        await interaction.reply({ content: "Ticket created!", ephemeral: true });
+    }
+})
+
+// delete ticket button
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.customId == "closeButton") {
+        await interaction.reply("Closing ticket...");
+        await interaction.channel.delete();
     }
 })
 
