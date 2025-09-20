@@ -15,6 +15,9 @@ const welcomeChannelID = "1406207097070288896";
 const unveriferRoleID = "1352581380151709736";
 const jrRacerRoleID = "1412486871900229632";
 
+// staff role ID
+const staffRoleID = "1350502354285363280";
+
 // commands
 const commands = [
     new SlashCommandBuilder()
@@ -39,6 +42,10 @@ const commands = [
             .setDescription("The suggestion")
             .setRequired(true)
         )
+        .setDMPermission(false),
+    new SlashCommandBuilder()
+        .setName("ticket-setup")
+        .setDescription("Sends the ticket panel to the currect channel. Staff only")
         .setDMPermission(false)
 ]
 
@@ -114,6 +121,22 @@ client.on(Events.InteractionCreate, async (interaction) => {
         else {
             await interaction.reply({ content: "You are not verifed", ephemeral: true });
         }
+    }
+})
+
+// ticket setup command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "ticket-setup"  && interaction.user.roles.cache.has(staffRoleID)) {
+        const ticketEmbed = new EmbedBuilder()
+            .setTitle("Create ticket")
+            .setDescription("Make a ticket by clicking the button below. Please do not abuse this.")
+        const ticketButton = new ButtonBuilder()
+            .setCustomId("openTicketBtn")
+            .setLabel("Open ticket")
+            .setStyle(ButtonStyle.Primary)
+        const actionRow = new ActionRowBuilder()
+            .addComponents(ticketButton)
+        interaction.channel.send({ embeds: [ticketEmbed], compoments: [actionRow] });
     }
 })
 
