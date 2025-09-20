@@ -188,7 +188,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             .setStyle(ButtonStyle.Primary)
         const actionRow = new ActionRowBuilder()
             .addComponents(closeButton)
-        const firstMsg = await ticketChannel.send({ content: `<@&${staffRoleID}> <@${interaction.user.id}`, embeds: [ticketEmbed], compoments: [actionRow] });
+        const firstMsg = await ticketChannel.send({ content: `<@&${staffRoleID}> <@${interaction.user.id}>`, embeds: [ticketEmbed], components: [actionRow] });
         await firstMsg.pin()
         await interaction.reply({ content: "Ticket created!", ephemeral: true });
     }
