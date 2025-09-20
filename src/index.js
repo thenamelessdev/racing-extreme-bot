@@ -122,7 +122,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.GuildMemberAdd, async (member) => {
     const welcomeChannel = await client.channels.fetch(welcomeChannelID);
     await welcomeChannel.send(`<@${member.user.id}> joined the server. Welcome!`);
-    await member.roles.add(jrRacerRoleID);
 })
 
 // leave message
