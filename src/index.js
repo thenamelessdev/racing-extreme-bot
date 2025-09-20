@@ -166,6 +166,7 @@ client.on(Events.MessageDelete, async (message) => {
                 .setTitle(`${message.author.username}:`)
                 .setDescription(message.content)
             message.channel.send({ embeds: [embed] })
+            return
         }
         message.channel.send(`<@${message.author.id}>: \n${message.content}`);
     }
