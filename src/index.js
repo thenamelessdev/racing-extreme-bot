@@ -168,7 +168,7 @@ client.on(Events.MessageDelete, async (message) => {
 // create ticket button
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.customId == "openTicketBtn") {
-        const ticketChannel = await guild.channels.create({ name: `ticket-${interaction.user.username}`, type: 0, PermissionOverwrites: [
+        const ticketChannel = await interaction.guild.channels.create({ name: `ticket-${interaction.user.username}`, type: 0, PermissionOverwrites: [
             {
                 id: guild.roles.everyone, deny: ["ViewChannel"]
             },
