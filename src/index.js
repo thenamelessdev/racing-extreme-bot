@@ -153,38 +153,53 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 // verify command
 client.on(Events.InteractionCreate, async (interaction) => {
-    if (interaction.commandName == "verify") {
+    if (interaction.commandName === "verify") {
         if (interaction.member.roles.cache.has(verifedRoleID)) {
-            await interaction.reply({ content: "You are already verifed.", ephemeral: true })
+            await interaction.reply({ content: "You are already verified.", ephemeral: true });
+            return;
         }
-        else {
-            const rbxUsername = interaction.options.getString("roblox-username");
+
+        const rbxUsername = interaction.options.getString("roblox-username");
+
+        try {
+            // Fetch user info
             const getUname = await fetch("https://users.roblox.com/v1/usernames/users", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ usernames: rbxUsername })
+                body: JSON.stringify({ usernames: [rbxUsername] })
             });
-            try {
-                const rbxID = getUname.id;
-            }
-            catch {
+
+            const getUnameData = await getUname.json();
+
+            if (!getUnameData.data || getUnameData.data.length === 0) {
+
                 await interaction.reply({ content: "The username wasn't found.", ephemeral: true });
                 return;
             }
-            const getDescription = await fetch(`https://users.roblox.com/v1/users/${rbxID}`, {
-                method: "GET"
-            });
-            const description = getDescription.description;
-            if (description == "RACEVERIFY") {
+
+            const rbxID = getUnameData.data[0].id;
+
+            const getDescription = await fetch(`https://users.roblox.com/v1/users/${rbxID}`);
+            const descriptionData = await getDescription.json();
+
+            const description = descriptionData.description;
+
+            if (description === "RACEVERIFY") {
                 await interaction.member.roles.add(verifedRoleID);
-                await interaction.reply({ content: "You are verifed!", ephemeral: true });
+                await interaction.reply({ content: "You are verified!", ephemeral: true });
+            } else {
+                await interaction.reply({
+                    content: "Please set `RACEVERIFY` as your Roblox description for verification. You may change it back after verification.",
+                    ephemeral: true
+                });
             }
-            else {
-                await interaction.reply({ content: "Please set `RACEVERIFY` as your Roblox description for the verification. You may change it back after the verification.", ephemeral: true });
-            }
+        } catch (err) {
+            console.error(err);
+            await interaction.reply({ content: "An error occurred while verifying.", ephemeral: true });
         }
     }
-})
+});
+
 
 // events
 
