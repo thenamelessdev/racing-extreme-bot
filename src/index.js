@@ -216,8 +216,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const explanation = apiResultJson.explanation;
         const embed = new EmbedBuilder()
             .setTitle(title)
-            .setDescription(explanation)
-            .setImage(url)
+            .setDescription(`Link: ${url} \nExplanation: ${explanation}`)
         await interaction.reply({ embeds: [embed] });
     }
 })
