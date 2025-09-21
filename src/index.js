@@ -186,6 +186,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
             if (description === "RACEVERIFY") {
                 await interaction.member.roles.add(verifedRoleID);
+                await interaction.member.roles.remove(unveriferRoleID);
                 await interaction.reply({ content: "You are verified!", ephemeral: true });
             } else {
                 await interaction.reply({
@@ -207,6 +208,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.GuildMemberAdd, async (member) => {
     const welcomeChannel = await client.channels.fetch(welcomeChannelID);
     await welcomeChannel.send(`<@${member.user.id}> joined the server. Welcome!`);
+    await member.roles.add(unveriferRoleID);
+    await member.roles.add(jrRacerRoleID);
 })
 
 // leave message
