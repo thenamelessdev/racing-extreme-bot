@@ -210,10 +210,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName == "astronomy-picture-of-the-day") {
         const apiResult = await fetch("https://api.nasa.gov/planetary/apod?api_key=iaWoSgBUgdss8w6gzYfmcsINSxJXw99b3Go5MDSc");
-        const apiResultJson = apiResult.json();
-        const title = await apiResultJson.title;
-        const url = await apiResultJson.url;
-        const explanation = await apiResultJson.explanation;
+        const apiResultJson = await apiResult.json();
+        const title = apiResultJson.title;
+        const url = apiResultJson.url;
+        const explanation = apiResultJson.explanation;
         const embed = new EmbedBuilder()
             .setTitle(title)
             .setDescription(explanation)
