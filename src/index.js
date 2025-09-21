@@ -56,7 +56,11 @@ const commands = [
             .setName("roblox-username")
             .setDescription("Your roblox username. We will not store this in a database or keep it.")
             .setRequired(true)
-        )
+        ),
+    new SlashCommandBuilder()
+        .setName("astronomy-picture-of-the-day")
+        .setDescription("Gives you the today's astronomy picture. Powered by Nasa open api")
+        .setDMPermission(false)
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -201,6 +205,23 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
+
+//astronopy pic command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "astronomy-picture-of-the-day") {
+        const apiResult = await fetch("https://api.nasa.gov/planetary/apod?api_key=iaWoSgBUgdss8w6gzYfmcsINSxJXw99b3Go5MDSc", {
+            method: "GET"
+        });
+        const title = apiResult.title;
+        const url = apiResult.url;
+        const explanation = apiResult.explanation;
+        const embed = new EmbedBuilder()
+            .setTitle(title)
+            .setDescription(explanation)
+            .setImage(url)
+        await interaction.reply({ embeds: [embed] });
+    }
+})
 
 // events
 
