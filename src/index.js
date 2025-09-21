@@ -212,9 +212,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const apiResult = await fetch("https://api.nasa.gov/planetary/apod?api_key=iaWoSgBUgdss8w6gzYfmcsINSxJXw99b3Go5MDSc", {
             method: "GET"
         });
-        const title = apiResult.title;
-        const url = apiResult.url;
-        const explanation = apiResult.explanation;
+        const title = await apiResult.title;
+        const url = await apiResult.url;
+        const explanation = await apiResult.explanation;
         const embed = new EmbedBuilder()
             .setTitle(title)
             .setDescription(explanation)
