@@ -227,6 +227,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 // talk-to-beans command
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName == "talk-to-beans") {
+        await interaction.deferReply();
         const apiResult = await fetch("https://api.shapes.inc/v1/chat/completions", {
             method: "POST",
             headers: { "Authorization": "Bearer Y7PNUX9F5UTTYWAB2YZIZBAVSOSNARFJVHM7RWASAZI", "Content-Type": "application/json" },
@@ -234,7 +235,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         });
         const apiResultjson = await apiResult.json();
         const shapeMsg = apiResultjson.choices[0].message.content;
-        await interaction.reply(shapeMsg);
+        await interaction.editReply(shapeMsg);
     }
 })
 
