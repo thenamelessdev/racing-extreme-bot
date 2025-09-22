@@ -66,7 +66,7 @@ const commands = [
         .setDescription("Talk to a Shape called Beans. Powered my Shapes api")
         .addStringOption(option =>
             option
-            .setTitle("message")
+            .setName("message")
             .setDescription("The message that you want to send")
             .setRequired(true)
         )
