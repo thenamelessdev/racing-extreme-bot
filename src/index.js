@@ -230,10 +230,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const apiResult = await fetch("https://api.shapes.inc/v1/chat/completions", {
             method: "POST",
             headers: { "Authorization": "Bearer Y7PNUX9F5UTTYWAB2YZIZBAVSOSNARFJVHM7RWASAZI", "Content-Type": "application/json" },
-            body: {"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": "Hello" }]}
+            body: JSON.stringify({"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": "Hello" }]})
         });
         const apiResultjson = await apiResult.json();
-        const shapeMsg = apiResult.choices[0].message.content;
+        const shapeMsg = apiResultjson.choices[0].message.content;
         await interaction.reply(shapeMsg);
     }
 })
