@@ -64,6 +64,12 @@ const commands = [
     new SlashCommandBuilder()
         .setName("talk-to-beans")
         .setDescription("Talk to a Shape called Beans. Powered my Shapes api")
+        .addStringOption(option =>
+            option
+            .setTitle("message")
+            .setDescription("The message that you want to send")
+            .setRequired(true)
+        )
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -228,10 +234,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName == "talk-to-beans") {
         await interaction.deferReply();
+        const messagetobeans = interaction.options.getString("message")
         const apiResult = await fetch("https://api.shapes.inc/v1/chat/completions", {
             method: "POST",
             headers: { "Authorization": "Bearer Y7PNUX9F5UTTYWAB2YZIZBAVSOSNARFJVHM7RWASAZI", "Content-Type": "application/json" },
-            body: JSON.stringify({"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": "Hello" }]})
+            body: JSON.stringify({"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": messagetobeans }]})
         });
         const apiResultjson = await apiResult.json();
         const shapeMsg = apiResultjson.choices[0].message.content;
