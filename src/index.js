@@ -60,7 +60,10 @@ const commands = [
     new SlashCommandBuilder()
         .setName("astronomy-picture-of-the-day")
         .setDescription("Gives you the today's astronomy picture. Powered by Nasa open api")
-        .setDMPermission(false)
+        .setDMPermission(false),
+    new SlashCommandBuilder()
+        .setName("talk-to-beans")
+        .setDescription("Talk to a Shape called Beans. Powered my Shapes api")
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -218,6 +221,20 @@ client.on(Events.InteractionCreate, async (interaction) => {
             .setTitle(title)
             .setDescription(`Link: ${url} \nExplanation: ${explanation}`)
         await interaction.reply({ embeds: [embed] });
+    }
+})
+
+// talk-to-beans command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "talk-to-beans") {
+        const apiResult = await fetch("https://api.shapes.inc/v1/chat/completions", {
+            method: "POST",
+            headers: { "Authorization": "Bearer Y7PNUX9F5UTTYWAB2YZIZBAVSOSNARFJVHM7RWASAZI", "Content-Type": "application/json" },
+            body: {"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": "Hello" }]}
+        });
+        const apiResultjson = await apiResult.json();
+        const shapeMsg = apiResult.choices.message.content;
+        await interaction.reply(shapeMsg);
     }
 })
 
