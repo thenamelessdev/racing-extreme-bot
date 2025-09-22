@@ -233,7 +233,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             body: {"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": "Hello" }]}
         });
         const apiResultjson = await apiResult.json();
-        const shapeMsg = apiResult.choices[0].message.content;
+        const shapeMsg = apiResult.choices[1].message.content;
         await interaction.reply(shapeMsg);
     }
 })
