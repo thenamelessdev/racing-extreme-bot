@@ -1,5 +1,5 @@
 const { Client, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, Status, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ContextMenuCommandBuilder, ModalBuilder, ApplicationCommandType, messageLink, Guild } = require('discord.js');
-const { token } = require('../config.json');
+const { token, shapesToken } = require('../config.json');
 const { PermissionOverwriteManager } = require('discord.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping] });
@@ -237,7 +237,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const messagetobeans = interaction.options.getString("message")
         const apiResult = await fetch("https://api.shapes.inc/v1/chat/completions", {
             method: "POST",
-            headers: { "Authorization": "Bearer Y7PNUX9F5UTTYWAB2YZIZBAVSOSNARFJVHM7RWASAZI", "Content-Type": "application/json" },
+            headers: { "Authorization": `Bearer ${shapesToken}`, "Content-Type": "application/json" },
             body: JSON.stringify({"model": "shapesinc/beans-cc8v", "messages": [{ "role": "user", "content": messagetobeans }]})
         });
         const apiResultjson = await apiResult.json();
