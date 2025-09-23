@@ -242,7 +242,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
         });
         const apiResultjson = await apiResult.json();
         const shapeMsg = apiResultjson.choices[0].message.content;
-        await interaction.editReply(shapeMsg);
+        try {
+            await interaction.editReply(shapeMsg);
+        }
+        catch {
+            await interaction.editReply("The message is too long. Please try again.");
+        }
     }
 })
 
