@@ -69,7 +69,10 @@ const commands = [
             .setName("message")
             .setDescription("The message that you want to send")
             .setRequired(true)
-        )
+        ),
+    new SlashCommandBuilder()
+        .setName("dog")
+        .setDescription("Gives you a dog picture using my api")
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -248,6 +251,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
         catch {
             await interaction.editReply("The message is too long. Please try again.");
         }
+    }
+})
+
+// dog command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "dog") {
+        const dog = await fetch("http://api.thenamelessdev.com/dog");
+        const dogjson = await dog.json();
+        interaction.reply(dogjson.image);
     }
 })
 
