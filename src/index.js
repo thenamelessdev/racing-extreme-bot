@@ -341,4 +341,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 })
 
+// server prefix command
+client.on(Events.MessageCreate, async (message) => {
+    if (message.content == "!server") {
+        const embed = new EmbedBuilder()
+            .setTitle("About server")
+            .setDescription(`Server name: ${message.guild.name}`)
+            .setImage(message.guild.icon)
+        message.reply({ embeds: [embed] });
+    }
+})
+
 client.login(token);
