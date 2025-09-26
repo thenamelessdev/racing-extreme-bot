@@ -72,7 +72,22 @@ const commands = [
         ),
     new SlashCommandBuilder()
         .setName("dog")
-        .setDescription("Gives you a dog picture using my api")
+        .setDescription("Gives you a dog picture using my api"),
+    new SlashCommandBuilder()
+        .setName("warn")
+        .setDescription("warns a member (Staff only)")
+        .addUserOption(option =>
+            option
+            .setName("target")
+            .setDescription("the target that you want to warn")
+            .setRequired(true)
+        )
+        .addStringOption(option => 
+            option
+            .setName("reason")
+            .setDescription("the reason of the warning")
+            .setRequired(true)
+        )
 ]
 
 client.once(Events.ClientReady, async readyClient => {
@@ -260,6 +275,23 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const dog = await fetch("http://api.thenamelessdev.com/dog");
         const dogjson = await dog.json();
         interaction.reply(dogjson.image);
+    }
+})
+
+// warn command
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.commandName == "warn") {
+        if (interaction.member.roles.cache.has(staffRoleID)) {
+            const reason = interaction.options.getString("reason");
+            const target = interaction.options.getUser("target")
+            const button = new ButtonBuilder()
+                .setCustomId("warnappeal")
+                .setLabel("Appeal")
+                .setStyle(ButtonStyle.Primary)
+            const embed = new EmbedBuilder()
+                .setTitle("Warning")
+                .setDescription(`You got warned. \nPunishing staff: <@${interaction.member.user.id}> (${interaction.member.user.username}) \nReason: ${reason}`)
+        }
     }
 })
 
