@@ -288,9 +288,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 .setCustomId("warnappeal")
                 .setLabel("Appeal")
                 .setStyle(ButtonStyle.Primary)
+            const row = new ActionRowBuilder()
+                .addComponents(button)
             const embed = new EmbedBuilder()
                 .setTitle("Warning")
                 .setDescription(`You got warned. \nPunishing staff: <@${interaction.member.user.id}> (${interaction.member.user.username}) \nReason: ${reason}`)
+            await target.send({ embeds: [embed], components: [row] });
+            await interaction.reply("Warned user")
         }
     }
 })
@@ -383,5 +387,8 @@ client.on(Events.MessageCreate, async (message) => {
         message.reply({ embeds: [embed] });
     }
 })
+
+// warn appeal button
+client.on(Events.InteractionCreate, async (interaction))
 
 client.login(token);
