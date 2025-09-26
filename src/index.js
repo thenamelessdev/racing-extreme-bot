@@ -389,6 +389,12 @@ client.on(Events.MessageCreate, async (message) => {
 })
 
 // warn appeal button
-client.on(Events.InteractionCreate, async (interaction))
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (interaction.customId == "warnappeal") {
+        const modal = new ModalBuilder()
+            .setCustomId(`warnappealmodal-${interaction.member.user.id}`)
+            .setTitle("Warning appeal")
+    }
+})
 
 client.login(token);
