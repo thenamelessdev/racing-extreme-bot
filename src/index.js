@@ -347,7 +347,7 @@ client.on(Events.MessageCreate, async (message) => {
         const embed = new EmbedBuilder()
             .setTitle("About server")
             .setDescription(`Server name: ${message.guild.name}`)
-            .setImage(message.guild.icon)
+            .setImage(message.guild.icon.url)
         message.reply({ embeds: [embed] });
     }
 })
