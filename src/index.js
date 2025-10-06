@@ -13,7 +13,7 @@ const welcomeChannelID = "1406207097070288896";
 
 // join role IDs
 const unveriferRoleID = "1352581380151709736";
-const jrRacerRoleID = "1412486871900229632";
+const jrRacerRoleID = "1424338077358358608";
 
 // staff role ID
 const staffRoleID = "1350502354285363280";
